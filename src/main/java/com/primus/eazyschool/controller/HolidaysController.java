@@ -2,6 +2,8 @@ package com.primus.eazyschool.controller;
 
 import com.primus.eazyschool.model.Holiday;
 import com.primus.eazyschool.model.HolidayType;
+import com.primus.eazyschool.repository.HolidaysRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class HolidaysController {
+
+    @Autowired
+    private HolidaysRepository holidaysRepository;
 
     @GetMapping("/holidays/{display}")
     public String displayHolidays(@PathVariable String display, Model model){
@@ -28,16 +33,7 @@ public class HolidaysController {
         }
 
 
-        List<Holiday> holidays = Arrays.asList(
-                new Holiday(" Jan 1 ","New Year's Day", HolidayType.FESTIVAL),
-                new Holiday(" Oct 31 ","Halloween", HolidayType.FESTIVAL),
-                new Holiday(" Nov 24 ","Thanksgiving Day", HolidayType.FESTIVAL),
-                new Holiday(" Dec 25 ","Christmas", HolidayType.FESTIVAL),
-                new Holiday(" Jan 17 ","Martin Luther King Jr. Day", HolidayType.FEDERAL),
-                new Holiday(" July 4 ","Independence Day", HolidayType.FEDERAL),
-                new Holiday(" Sep 5 ","Labor Day", HolidayType.FEDERAL),
-                new Holiday(" Nov 11 ","Veterans Day", HolidayType.FEDERAL)
-        );
+        List<Holiday> holidays = holidaysRepository.findAllHoliday();
 
         HolidayType[] holidayTypes = HolidayType.values();
 
