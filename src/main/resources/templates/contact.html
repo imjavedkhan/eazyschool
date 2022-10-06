@@ -46,28 +46,27 @@ Author URL: http://w3layouts.com
             <div class="row contact-block">
                 <div class="col-md-7 contact-right">
                     <ul>
-                        <li class="alert alert-danger" role="alert"
-                            th:each="error: ${#fields.errors('contact.*')}" th:text="${error}"></li>
+                        <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('contact.*')}" th:text="${error}" />
                     </ul>
-                    <form th:action="@{/saveMsg}" method="post" class="signin-form" th:object="${contact}">
+                    <form action="/saveMsg" method="post" class="signin-form" th:object="${contact}">
                         <div class="input-grids">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input Type="text" th:field="*{name}" name="name" id="name" placeholder="Your Name"
+                                    <input type="text" th:field="*{name}" placeholder="Your Name"
                                         class="contact-input" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <input Type="text" th:field="*{mobileNum}" name="mobileNum" id="mobileNum" placeholder="Your Mobile Number"
+                                    <input type="text" th:field="*{mobileNum}" placeholder="Your Mobile Number"
                                         class="contact-input" />
                                 </div>
                             </div>
-                            <input Type="text" th:field="*{email}" name="email" id="email" placeholder="Your Email"
+                            <input type="text" th:field="*{email}" placeholder="Your Email"
                                 class="contact-input" />
-                            <input Type="text" th:field="*{subject}" name="subject" id="subject" placeholder="Subject"
+                            <input type="text" th:field="*{subject}" placeholder="Subject"
                                 class="contact-input" />
                         </div>
                         <div class="form-input">
-                            <textarea th:field="*{message}" name="message" id="message" placeholder="Type your message here"></textarea>
+                            <textarea th:field="*{message}" placeholder="Type your message here"></textarea>
                         </div>
                         <div class="text-start">
                             <button class="btn btn-style btn-style-3">Send Message</button>
