@@ -12,6 +12,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,33 +36,39 @@ public class ContactService {
         log.info(contact.toString());
 
         contact.setStatus(EazySchoolConstants.OPEN);
-        contact.setCreatedBy(EazySchoolConstants.ANONYMOUS);
-        contact.setCreatedAt(LocalDateTime.now());
+       /* contact.setCreatedBy(EazySchoolConstants.ANONYMOUS);
+        contact.setCreatedAt(LocalDateTime.now());*/
 
-        int result = contactRepository.saveContactMsg(contact);
+        Contact result = contactRepository.save(contact);
 
-        if(result>0){
+        if(result.getContactId()>0){
             isSaved = true;
         }
         return isSaved;
     }
 
     public List<Contact> findMsgsWithOpenStatus(){
-        List<Contact> contactMsgsList = contactRepository.findMsgsWithStatus(EazySchoolConstants.OPEN);
+        List<Contact> contactMsgsList = contactRepository.findByStatus(EazySchoolConstants.OPEN);
         return contactMsgsList;
     }
 
-    public boolean updateMsgStatus(int id, String updatedBy){
+    public boolean updateMsgStatus(int id){
 
         boolean isUpdated =  false;
 
-        int result = contactRepository.updateMsgStatus(id,EazySchoolConstants.CLOSE,updatedBy);
+        Optional<Contact> contactOptional = contactRepository.findById(id);
 
-        if(result>0){
+        contactOptional.ifPresent(contact -> {
+            contact.setStatus(EazySchoolConstants.CLOSE);
+            /*contact.setUpdatedBy(updatedBy);
+            contact.setUpdatedAt(LocalDateTime.now());*/
+        });
+
+        Contact result = contactRepository.save(contactOptional.get());
+
+        if(result.getUpdatedBy() != null){
             isUpdated = true;
         }
-
         return isUpdated;
-
     }
 }

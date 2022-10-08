@@ -14,7 +14,7 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        http.csrf().ignoringAntMatchers("/saveMsg").ignoringAntMatchers("/h2-console/**")
+        http.csrf().ignoringAntMatchers("/saveMsg")
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/dashboard").authenticated()
@@ -34,15 +34,12 @@ public class ProjectSecurityConfig {
                 .logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .and().httpBasic();
-
-        http.headers().frameOptions().disable();
+                .httpBasic();
 
         return http.build();
     }
 
-    @Bean
+   /* @Bean
     public InMemoryUserDetailsManager userDetailsService() {
 
         UserDetails admin = User.withDefaultPasswordEncoder()
@@ -56,5 +53,5 @@ public class ProjectSecurityConfig {
                 .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
-    }
+    }*/
 }

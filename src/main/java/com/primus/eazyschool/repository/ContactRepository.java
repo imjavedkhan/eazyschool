@@ -3,6 +3,7 @@ package com.primus.eazyschool.repository;
 import com.primus.eazyschool.model.Contact;
 import com.primus.eazyschool.rowmappers.ContactRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
@@ -19,9 +20,9 @@ type to the Spring context and indicate that given Bean is used to perform
 DB related operations and
 * */
 @Repository
-public class ContactRepository {
+public interface ContactRepository extends CrudRepository<Contact,Integer> {
 
-    private final JdbcTemplate jdbcTemplate;
+    /*private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public ContactRepository(JdbcTemplate jdbcTemplate) {
@@ -55,6 +56,6 @@ public class ContactRepository {
                 preparedStatement.setInt(4, contactId);
             }
         });
-    }
-
+    }*/
+    List<Contact> findByStatus(String status);
 }

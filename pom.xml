@@ -71,15 +71,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<!--The app only needs the database and the JDBC driver at
-            runtime. The app doesn’t need them for compilation. To instruct Maven we
-            only want these dependencies at runtime,we add the scope tag with the
-            value “runtime.”-->
-			<scope>runtime</scope>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
 		<dependency>
 			<groupId>org.springframework</groupId>
