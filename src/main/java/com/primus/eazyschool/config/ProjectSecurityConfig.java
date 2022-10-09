@@ -17,9 +17,11 @@ public class ProjectSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         http.csrf().ignoringAntMatchers("/saveMsg")
+                .ignoringAntMatchers("/public/**")
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/dashboard").authenticated()
+                .mvcMatchers("/updateProfile").authenticated()
                 .mvcMatchers("/home").permitAll()
                 .mvcMatchers("/holidays/**").permitAll()
                 .mvcMatchers("/contact").permitAll()
@@ -28,6 +30,7 @@ public class ProjectSecurityConfig {
                 .mvcMatchers("/about").permitAll()
                 .mvcMatchers("/login").permitAll()
                 .mvcMatchers("/displayMessages").hasRole("ADMIN")
+                .mvcMatchers("/public/**").permitAll()
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/dashboard")

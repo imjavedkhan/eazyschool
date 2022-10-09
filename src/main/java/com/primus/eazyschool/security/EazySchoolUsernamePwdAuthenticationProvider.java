@@ -38,15 +38,17 @@ public class EazySchoolUsernamePwdAuthenticationProvider implements Authenticati
         Person person = personRepository.findByEmail(email);
 
         //decoding and matching password
-        // for security we are not sending password back after confirmation
         if(null != person && person.getPersonId()>0 && passwordEncoder.matches(pwd,person.getPwd())){
-            return new UsernamePasswordAuthenticationToken(person.getName(),null,
+            //created a object of UsernamePasswordAuthenticationToken to return user and role and
+            //for security we are not sending password back after confirmation
+            return new UsernamePasswordAuthenticationToken(email,null,
                     getGrantedAuthorities(person.getRoles()));
         }else{
             throw new BadCredentialsException("Invalid Credentials!!!");
         }
     }
 
+    //returning roles
     private List<GrantedAuthority> getGrantedAuthorities(Roles roles) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+roles.getRoleName()));
