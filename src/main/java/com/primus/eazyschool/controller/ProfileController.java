@@ -4,6 +4,7 @@ import com.primus.eazyschool.model.Address;
 import com.primus.eazyschool.model.Person;
 import com.primus.eazyschool.model.Profile;
 import com.primus.eazyschool.repository.PersonRepository;
+import com.primus.eazyschool.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,9 @@ import javax.validation.Valid;
 
 @Controller
 public class ProfileController {
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private PersonRepository personRepository;
@@ -51,21 +55,22 @@ public class ProfileController {
 
         Person person = (Person) session.getAttribute("loggedInPerson");
 
-        person.setMobileNumber(profile.getMobileNumber());
+      //  Person saveProfile = personService.updateProfile(profile,person);
 
-        if(person.getAddress() == null && !(person.getAddress().getAddressId()>0)){
+        person.setName(profile.getName());
+        person.setEmail(profile.getEmail());
+        person.setMobileNumber(profile.getMobileNumber());
+        if(person.getAddress() ==null || !(person.getAddress().getAddressId()>0)){
             person.setAddress(new Address());
         }
-
         person.getAddress().setAddress1(profile.getAddress1());
         person.getAddress().setAddress2(profile.getAddress2());
         person.getAddress().setCity(profile.getCity());
         person.getAddress().setState(profile.getState());
         person.getAddress().setZipCode(profile.getZipCode());
-
-        Person saveProfile = personRepository.save(person);
-
-        session.setAttribute("loggedInPerson",saveProfile);
+        Person savedPerson = personRepository.save(person);
+        session.setAttribute("loggedInPerson", savedPerson);
+        //return "redirect:/displayProfile";
 
         return "redirect:/displayProfile";
 

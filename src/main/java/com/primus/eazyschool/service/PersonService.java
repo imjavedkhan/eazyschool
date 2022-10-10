@@ -1,7 +1,9 @@
 package com.primus.eazyschool.service;
 
 import com.primus.eazyschool.constants.EazySchoolConstants;
+import com.primus.eazyschool.model.Address;
 import com.primus.eazyschool.model.Person;
+import com.primus.eazyschool.model.Profile;
 import com.primus.eazyschool.model.Roles;
 import com.primus.eazyschool.repository.PersonRepository;
 import com.primus.eazyschool.repository.RolesRepository;
@@ -42,6 +44,22 @@ public class PersonService {
 
         return personSaved;
 
+    }
+
+    public Person updateProfile(Profile profile,Person person){
+
+        person.setName(profile.getName());
+        person.setEmail(profile.getEmail());
+        person.setMobileNumber(profile.getMobileNumber());
+        if(person.getAddress() ==null || !(person.getAddress().getAddressId()>0)){
+            person.setAddress(new Address());
+        }
+        person.getAddress().setAddress1(profile.getAddress1());
+        person.getAddress().setAddress2(profile.getAddress2());
+        person.getAddress().setCity(profile.getCity());
+        person.getAddress().setState(profile.getState());
+        person.getAddress().setZipCode(profile.getZipCode());
+        return personRepository.save(person);
     }
 
 }

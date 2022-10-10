@@ -12,16 +12,16 @@ import javax.validation.constraints.Size;
 @Data
 public class Profile {
 
-    @NotBlank(message = "Name must not be blank")
-    @Size(min = 3, message = "At least 3 character")
+    @NotBlank(message="Name must not be blank")
+    @Size(min=3, message="Name must be at least 3 characters long")
     private String name;
 
-    @NotBlank(message = "Mobile number must not be blank")
-    @Pattern(regexp = "(^$|[0-9]{10})", message = "at least 10 digits")
+    @NotBlank(message="Mobile number must not be blank")
+    @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
     private String mobileNumber;
 
-    @NotBlank(message = "Email not blank")
-    @Email(message = "Valid email address")
+    @NotBlank(message="Email must not be blank")
+    @Email(message = "Please provide a valid email address" )
     private String email;
 
     @NotBlank(message="Address1 must not be blank")
@@ -39,7 +39,7 @@ public class Profile {
     private String state;
 
     @NotBlank(message="Zip Code must not be blank")
-    @Pattern(regexp="(^$|[0-9]{6})",message = "Zip Code must be 5 digits")
+    @Pattern(regexp="(^$|[0-9]{6})",message = "Zip Code must be 6 digits")
     private String zipCode;
 
 }
