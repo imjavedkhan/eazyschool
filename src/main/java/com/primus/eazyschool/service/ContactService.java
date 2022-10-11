@@ -5,6 +5,10 @@ import com.primus.eazyschool.model.Contact;
 import com.primus.eazyschool.repository.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.context.annotation.RequestScope;
@@ -47,9 +51,14 @@ public class ContactService {
         return isSaved;
     }
 
-    public List<Contact> findMsgsWithOpenStatus(){
-        List<Contact> contactMsgsList = contactRepository.findByStatus(EazySchoolConstants.OPEN);
-        return contactMsgsList;
+    public Page<Contact> findMsgsWithOpenStatus(int pageNum, String sortField, String sortDir){
+
+        int pageSize=4;
+
+        Pageable pageable = PageRequest.of(pageNum,pageSize,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+
+        return contactRepository.findByStatus(EazySchoolConstants.OPEN, pageable);
     }
 
     public boolean updateMsgStatus(int id){

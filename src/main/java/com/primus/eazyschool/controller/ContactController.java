@@ -4,6 +4,7 @@ import com.primus.eazyschool.model.Contact;
 import com.primus.eazyschool.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,11 +61,23 @@ public class ContactController {
         return "redirect:/contact";
     }
 
-    @RequestMapping("/displayMessages")
-    public ModelAndView displayMessages(Model model){
-        List<Contact> contactMsgs = contactService.findMsgsWithOpenStatus();
+    @RequestMapping("/displayMessages/page/{pageNum}")
+    public ModelAndView displayMessages(Model model,@PathVariable int pageNum,
+                                        @RequestParam String sortField,
+                                        @RequestParam String sortDir){
+
+        Page<Contact> contactMsgs = contactService.findMsgsWithOpenStatus(pageNum,sortField,sortDir);
+        List<Contact> contactList = contactMsgs.getContent();
+
         ModelAndView modelAndView = new ModelAndView("messages.html");
-        modelAndView.addObject("contactMsgs", contactMsgs);
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", contactMsgs.getTotalPages());
+        model.addAttribute("totalMsgs", contactMsgs.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        modelAndView.addObject("contactMsgs", contactList);
 
         return modelAndView;
     }
@@ -72,6 +85,6 @@ public class ContactController {
     @GetMapping("/closeMsg")
     public String closeMsg(@RequestParam int id){
         contactService.updateMsgStatus(id);
-        return "redirect:/displayMessages";
+        return "redirect:/displayMessages/1?sortField=name&sortDir=desc";
     }
 }
